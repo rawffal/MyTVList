@@ -20,11 +20,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Result" />
+        <activity
+            android:name=".activity.Result"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.TVDetail"
             android:label="@string/action_settings"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activity.Result"></activity>
+        <activity
+            android:name=".activity.TVShowList"
+            android:parentActivityName=".activity.MainActivity">
         </activity>
     </application>
 
