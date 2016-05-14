@@ -31,18 +31,23 @@ public class TVDetail extends AppCompatActivity {
     ImageView poster;
     TextView title;
     TextView description;
+    SeasonAdapter seasonAdapter;
+    ArrayList<Season> sSeasons;
+    RecyclerView recyclerView;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv_detail);
 
-        Intent intent = getIntent();
+        intent = getIntent();
         String sPoster = intent.getStringExtra("Poster");
         String sBackdrop = intent.getStringExtra("Backdrop");
-        ArrayList<Season> sSeasons = intent.getParcelableArrayListExtra("Season");
+        sSeasons = intent.getParcelableArrayListExtra("Season");
         String sName = intent.getStringExtra("Name");
         String sOverview = intent.getStringExtra("Overview");
+        tv = intent.getParcelableExtra("TV");
 
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         toolbarLayout.setTitle(sName);
@@ -69,12 +74,22 @@ public class TVDetail extends AppCompatActivity {
                 .load(sPoster)
                 .into(poster);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.tv_detail_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.tv_detail_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new SeasonAdapter(sSeasons, R.layout.list_tv_seasons, getApplicationContext()));
+        updateUI();
 
         Picasso.with(this)
                 .load(sBackdrop)
                 .into(backdrop);
+    }
+
+    public void updateUI() {
+        if (seasonAdapter == null) {
+            seasonAdapter = new SeasonAdapter(sSeasons, R.layout.list_tv_seasons, getApplicationContext());
+            recyclerView.setAdapter(seasonAdapter);
+        } else {
+            seasonAdapter.notifyDataSetChanged();
+            recyclerView.setAdapter(seasonAdapter);
+        }
     }
 }

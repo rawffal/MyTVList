@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Intent intent;
     private Intent tvIntent;
 
-    protected static ArrayList<TV> tvShowList;
+    public static ArrayList<TV> tvShowList;
 
     public static final String TV_LIST_TAB = "TV List";
 

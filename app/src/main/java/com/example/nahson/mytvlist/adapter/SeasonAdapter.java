@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ import com.example.nahson.mytvlist.rest.ApiInterface;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import retrofit2.Call;
@@ -36,26 +39,34 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     private static List<Season> seasonList;
     private static int rowLayout;
     private static Context context;
+    private static int position = 0;
+    private static Hashtable<Integer, Integer> table;
 
     public static class SeasonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         LinearLayout linearLayout;
         TextView seasonTitle;
         ImageView posterPath;
+        EditText episodeCounter;
+        TextView totalEpisodes;
+        ImageButton incrementEpisode;
         Intent intent;
         SeasonNumber seasonNumber;
 
-
         public SeasonViewHolder(View v) {
             super(v);
+            table = new Hashtable<>();
             linearLayout = (LinearLayout) v.findViewById(R.id.season_tv_layout);
             seasonTitle = (TextView) v.findViewById(R.id.season_title);
             posterPath = (ImageView) v.findViewById(R.id.season_poster_image);
+            episodeCounter = (EditText) v.findViewById(R.id.episode_counter);
+            totalEpisodes = (TextView) v.findViewById(R.id.total_episodes);
+            incrementEpisode = (ImageButton) v.findViewById(R.id.increment_episode);
             v.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            int position = getAdapterPosition();
+            position = getAdapterPosition();
             Log.d("Position: ", "" + position);
             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
             Season seasonN = seasonList.get(position);
@@ -99,11 +110,29 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     }
 
     @Override
-    public void onBindViewHolder(SeasonViewHolder holder, int position) {
+    public void onBindViewHolder(final SeasonViewHolder holder, final int position) {
         holder.seasonTitle.setText(SEASON + seasonList.get(position).getSeasonNumber());
         Picasso.with(context)
                 .load(seasonList.get(position).getPosterPath())
                 .into(holder.posterPath);
+        holder.incrementEpisode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int counter = 1;
+                final int seasonNumber = seasonList.get(position).getSeasonNumber();
+                if (table.containsKey(seasonNumber)) {
+                    if (table.get(seasonNumber) < seasonList.get(position).getEpisodeCount()) {
+                        counter = table.get(seasonNumber);
+                        table.put(seasonNumber, ++counter);
+                    }
+                } else {
+                    table.put(seasonNumber, counter);
+                }
+                holder.episodeCounter.setText("" + table.get(seasonNumber));
+            }
+        });
+        holder.totalEpisodes.setText("" + seasonList.get(position).getEpisodeCount());
+
     }
 
     @Override

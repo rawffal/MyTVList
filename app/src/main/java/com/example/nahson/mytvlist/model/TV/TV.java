@@ -79,7 +79,7 @@ public class TV implements Parcelable {
     @Expose
     private int voteCount;
 
-    protected TV(Parcel in) {
+    public TV(Parcel in) {
         backdropPath = in.readString();
         firstAirDate = in.readString();
         id = in.readInt();

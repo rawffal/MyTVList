@@ -65,10 +65,10 @@ public class TVAdapter extends RecyclerView.Adapter<TVAdapter.TVViewHolder> {
 
         @Override
         public void onClick(View v) {
-            int position = getAdapterPosition();
+            final int position = getAdapterPosition();
 
             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            TV tv = tvList.get(position);
+            final TV tv = tvList.get(position);
             ID = tv.getId();
 
             Call<TVID> call = apiInterface.getTVShowsDetails(ID, API_KEY);
@@ -83,6 +83,7 @@ public class TVAdapter extends RecyclerView.Adapter<TVAdapter.TVViewHolder> {
                     intent.putExtra("Backdrop", tvid.getBackdropPath());
                     intent.putExtra("Name", tvid.getName());
                     intent.putExtra("Overview", tvid.getOverview());
+                    intent.putExtra("TV", tv);
                     context.startActivity(intent);
                 }
 
