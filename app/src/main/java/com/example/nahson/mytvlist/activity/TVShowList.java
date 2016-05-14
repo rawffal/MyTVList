@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.nahson.mytvlist.R;
 import com.example.nahson.mytvlist.adapter.TVAdapter;
-import com.example.nahson.mytvlist.model.TV;
+import com.example.nahson.mytvlist.model.TV.TV;
 
 import java.util.List;
 
@@ -32,7 +32,6 @@ public class TVShowList extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.tv_list_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        recyclerView.setAdapter(new TVAdapter(tvList, R.layout.list_item_tv, getApplicationContext()));
+        recyclerView.setAdapter(new TVAdapter(tvList, R.layout.favorite_list, getApplicationContext()));
     }
 }

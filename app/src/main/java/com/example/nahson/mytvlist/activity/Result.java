@@ -6,12 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.nahson.mytvlist.R;
 import com.example.nahson.mytvlist.adapter.TVAdapter;
-import com.example.nahson.mytvlist.model.TV;
-import com.example.nahson.mytvlist.model.TVResponse;
+import com.example.nahson.mytvlist.model.TV.TV;
+import com.example.nahson.mytvlist.model.TV.TVResponse;
 import com.example.nahson.mytvlist.rest.ApiClient;
 import com.example.nahson.mytvlist.rest.ApiInterface;
 
@@ -26,8 +25,6 @@ import retrofit2.Response;
  */
 public class Result extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    // TODO - insert your themoviedb.org API KEY here
     private final static String API_KEY = "56ad544b1b49a341e09a472c21bfcf9e";
 
     private Intent intent;
@@ -41,16 +38,10 @@ public class Result extends AppCompatActivity {
         intent = getIntent();
         query = intent.getStringExtra("Input");
 
-        if (API_KEY.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Please obtain your API KEY first from themoviedb.org", Toast.LENGTH_LONG).show();
-            return;
-        }
-
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.tvs_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ApiInterface apiService =
-                ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
         Call<TVResponse> call = apiService.getTVShows(API_KEY, query);
         call.enqueue(new Callback<TVResponse>() {

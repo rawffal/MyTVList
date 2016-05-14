@@ -1,4 +1,4 @@
-package com.example.nahson.mytvlist.model;
+package com.example.nahson.mytvlist.model.TV;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

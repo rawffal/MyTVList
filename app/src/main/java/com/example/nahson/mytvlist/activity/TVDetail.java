@@ -6,13 +6,19 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nahson.mytvlist.R;
-import com.example.nahson.mytvlist.model.TV;
+import com.example.nahson.mytvlist.adapter.SeasonAdapter;
+import com.example.nahson.mytvlist.model.TV.TV;
+import com.example.nahson.mytvlist.model.TVID.Season;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 /**
  * Created by Nah Son on 5/12/2016.
@@ -25,7 +31,6 @@ public class TVDetail extends AppCompatActivity {
     ImageView poster;
     TextView title;
     TextView description;
-    private Intent sendTVListIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +38,14 @@ public class TVDetail extends AppCompatActivity {
         setContentView(R.layout.activity_tv_detail);
 
         Intent intent = getIntent();
-        tv = intent.getParcelableExtra(EXTRA_TV);
+        String sPoster = intent.getStringExtra("Poster");
+        String sBackdrop = intent.getStringExtra("Backdrop");
+        ArrayList<Season> sSeasons = intent.getParcelableArrayListExtra("Season");
+        String sName = intent.getStringExtra("Name");
+        String sOverview = intent.getStringExtra("Overview");
 
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        toolbarLayout.setTitle(tv.getOriginalName());
+        toolbarLayout.setTitle(sName);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,17 +62,19 @@ public class TVDetail extends AppCompatActivity {
         description = (TextView) findViewById(R.id.tv_description);
         poster = (ImageView) findViewById(R.id.tv_poster);
 
-        title.setText(tv.getOriginalName());
+        title.setText(sName);
 
-        description.setText(tv.getOverview());
+        description.setText(sOverview);
         Picasso.with(this)
-                .load(tv.getPosterPath())
+                .load(sPoster)
                 .into(poster);
 
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.tv_detail_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new SeasonAdapter(sSeasons, R.layout.list_tv_seasons, getApplicationContext()));
+
         Picasso.with(this)
-                .load(tv.getBackdropPath())
+                .load(sBackdrop)
                 .into(backdrop);
-
-
     }
 }

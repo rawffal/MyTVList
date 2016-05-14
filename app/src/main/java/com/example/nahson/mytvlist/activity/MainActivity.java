@@ -12,12 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.nahson.mytvlist.R;
-import com.example.nahson.mytvlist.model.TV;
+import com.example.nahson.mytvlist.model.TV.TV;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
 
     private EditText searchBarText;
     private Button searchButton;

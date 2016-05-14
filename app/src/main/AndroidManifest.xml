@@ -32,6 +32,11 @@
             android:name=".activity.TVShowList"
             android:parentActivityName=".activity.MainActivity">
         </activity>
+        <activity
+            android:name=".activity.SeasonActivity"
+            android:label="Settings"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activity.TVDetail"></activity>
     </application>
 
 </manifest>
