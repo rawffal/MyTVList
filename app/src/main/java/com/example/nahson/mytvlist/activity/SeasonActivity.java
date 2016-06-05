@@ -24,7 +24,6 @@ public class SeasonActivity extends AppCompatActivity {
     private TextView seasonTitle;
     private TextView seasonDescription;
     private ImageView backdrop;
-    /*private ImageView poster;*/
     private List<Episode> episodeList;
 
     @Override
@@ -44,9 +43,6 @@ public class SeasonActivity extends AppCompatActivity {
         Picasso.with(this)
                 .load(intent.getStringExtra("Poster"))
                 .into(backdrop);
-        /*Picasso.with(this)
-                .load(intent.getStringExtra("Poster"))
-                .into(poster);*/
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.episode_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

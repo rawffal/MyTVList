@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.example.nahson.mytvlist.R;
 import com.example.nahson.mytvlist.activity.TVDetail;
+import com.example.nahson.mytvlist.activity.TvSeasonActivity;
 import com.example.nahson.mytvlist.model.TV.TV;
+import com.example.nahson.mytvlist.model.TVID.Season;
 import com.example.nahson.mytvlist.model.TVID.TVID;
 import com.example.nahson.mytvlist.rest.ApiClient;
 import com.example.nahson.mytvlist.rest.ApiInterface;
@@ -30,68 +32,39 @@ import retrofit2.Response;
  * Created by Nah Son on 5/12/2016.
  */
 public class TVAdapter extends RecyclerView.Adapter<TVAdapter.TVViewHolder> {
-
+    private static List<Integer> progress;
     private static List<TV> tvList;
-
     private static int rowLayout;
     private static Context context;
-
-    private final static String API_KEY = "56ad544b1b49a341e09a472c21bfcf9e";
-    private final static String TAG = "TAG";
-    private static List<Integer> progress;
-
     public static int ID;
 
     public static class TVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        LinearLayout tvLayout;
-        TextView tvName;
-        TextView data;
-        TextView tvShowDescription;
-        TextView rating;
-        ImageView tvPoster;
-        TVID tvid;
-        Intent intent;
+        private LinearLayout tvLayout;
+        private TextView tvName;
+        private TextView data;
+        private TextView tvShowDescription;
+        private TextView rating;
+        private ImageView tvPoster;
+        private TV tv;
 
         public TVViewHolder(View v) {
             super(v);
+            v.setOnClickListener(this);
             tvLayout = (LinearLayout) v.findViewById(R.id.tv_layout);
             tvName = (TextView) v.findViewById(R.id.title);
             data = (TextView) v.findViewById(R.id.subtitle);
             tvShowDescription = (TextView) v.findViewById(R.id.description);
             rating = (TextView) v.findViewById(R.id.rating);
             tvPoster = (ImageView) v.findViewById(R.id.poster_image);
-            v.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            final int position = getAdapterPosition();
-
-            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            final TV tv = tvList.get(position);
+            int position = getAdapterPosition();
+            tv = tvList.get(position);
             ID = tv.getId();
-
-            Call<TVID> call = apiInterface.getTVShowsDetails(ID, API_KEY);
-            call.enqueue(new Callback<TVID>() {
-                @Override
-                public void onResponse(Call<TVID> call, Response<TVID> response) {
-                    tvid = response.body();
-                    intent = new Intent(context, TVDetail.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putParcelableArrayListExtra("Season", (ArrayList) tvid.getSeasons());
-                    intent.putExtra("Poster", tvid.getPosterPath());
-                    intent.putExtra("Backdrop", tvid.getBackdropPath());
-                    intent.putExtra("Name", tvid.getName());
-                    intent.putExtra("Overview", tvid.getOverview());
-                    intent.putExtra("TV", tv);
-                    context.startActivity(intent);
-                }
-
-                @Override
-                public void onFailure(Call<TVID> call, Throwable t) {
-                    Log.e("TVAdapter: ", "Error occured");
-                }
-            });
+            Intent intent = TvSeasonActivity.createIntent(context, (ArrayList) tvList, ID);
+            context.startActivity(intent);
         }
     }
 

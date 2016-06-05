@@ -15,7 +15,10 @@ import android.widget.TextView;
 
 import com.example.nahson.mytvlist.R;
 import com.example.nahson.mytvlist.activity.SeasonActivity;
+import com.example.nahson.mytvlist.activity.TvEpisodeActivity;
+import com.example.nahson.mytvlist.model.SeasonNumber.Episode;
 import com.example.nahson.mytvlist.model.SeasonNumber.SeasonNumber;
+import com.example.nahson.mytvlist.model.TV.TV;
 import com.example.nahson.mytvlist.model.TVID.Season;
 import com.example.nahson.mytvlist.rest.ApiClient;
 import com.example.nahson.mytvlist.rest.ApiInterface;
@@ -33,24 +36,21 @@ import retrofit2.Response;
  * Created by Nah Son on 5/13/2016.
  */
 public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonViewHolder> {
-
-    private final static String API_KEY = "56ad544b1b49a341e09a472c21bfcf9e";
     private static final String SEASON = "Season ";
     private static List<Season> seasonList;
     private static int rowLayout;
     private static Context context;
-    private static int position = 0;
+    private static int position;
     private static Hashtable<Integer, Integer> table;
+    private static TV tv;
 
     public static class SeasonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        LinearLayout linearLayout;
-        TextView seasonTitle;
-        ImageView posterPath;
-        EditText episodeCounter;
-        TextView totalEpisodes;
-        ImageButton incrementEpisode;
-        Intent intent;
-        SeasonNumber seasonNumber;
+        private LinearLayout linearLayout;
+        private TextView seasonTitle;
+        private ImageView posterPath;
+        private EditText episodeCounter;
+        private TextView totalEpisodes;
+        private ImageButton incrementEpisode;
 
         public SeasonViewHolder(View v) {
             super(v);
@@ -67,39 +67,20 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         @Override
         public void onClick(View v) {
             position = getAdapterPosition();
-            Log.d("Position: ", "" + position);
-            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Season seasonN = seasonList.get(position);
-
-            Call<SeasonNumber> call = apiInterface.getSeasonNumberInfo(TVAdapter.ID,
-                    seasonN.getSeasonNumber(), API_KEY);
-            call.enqueue(new Callback<SeasonNumber>() {
-                @Override
-                public void onResponse(Call<SeasonNumber> call, Response<SeasonNumber> response) {
-                    seasonNumber = response.body();
-                    Log.d("Name: ", seasonNumber.getName());
-                    Log.d("Overview: ", seasonNumber.getOverview());
-                    intent = new Intent(context, SeasonActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("Poster", seasonNumber.getPosterPath());
-                    intent.putExtra("Name", seasonNumber.getName());
-                    intent.putExtra("Overview", seasonNumber.getOverview());
-                    intent.putParcelableArrayListExtra("Episodes", (ArrayList) seasonNumber.getEpisodes());
-                    context.startActivity(intent);
-                }
-
-                @Override
-                public void onFailure(Call<SeasonNumber> call, Throwable t) {
-                    Log.e("SeasonAdapter: ", t.getMessage());
-                }
-            });
+            Season season = seasonList.get(position);
+            Log.d("TV Series", tv.getName());
+            Log.d("Season Number", "" + season.getSeasonNumber());
+            Log.d("Season ID", "" + season.getId());
+            Intent intent = TvEpisodeActivity.createIntent(context, tv, seasonList, season.getId());
+            context.startActivity(intent);
         }
     }
 
-    public SeasonAdapter(List<Season> seasonList, int rowLayout, Context context) {
+    public SeasonAdapter(TV tv, List<Season> seasonList, int rowLayout, Context context) {
         SeasonAdapter.seasonList = seasonList;
         SeasonAdapter.rowLayout = rowLayout;
         SeasonAdapter.context = context;
+        SeasonAdapter.tv = tv;
     }
 
     @Override
@@ -110,16 +91,17 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     }
 
     @Override
-    public void onBindViewHolder(final SeasonViewHolder holder, final int position) {
+    public void onBindViewHolder(SeasonViewHolder holder, int position) {
+        Log.d("BindViewHolder", "" + seasonList.get(position).getId());
         holder.seasonTitle.setText(SEASON + seasonList.get(position).getSeasonNumber());
         Picasso.with(context)
                 .load(seasonList.get(position).getPosterPath())
                 .into(holder.posterPath);
-        holder.incrementEpisode.setOnClickListener(new View.OnClickListener() {
+        /*holder.incrementEpisode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int counter = 1;
-                final int seasonNumber = seasonList.get(position).getSeasonNumber();
+                int seasonNumber = seasonList.get(position).getSeasonNumber();
                 if (table.containsKey(seasonNumber)) {
                     if (table.get(seasonNumber) < seasonList.get(position).getEpisodeCount()) {
                         counter = table.get(seasonNumber);
@@ -131,7 +113,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
                 holder.episodeCounter.setText("" + table.get(seasonNumber));
             }
         });
-        holder.totalEpisodes.setText("" + seasonList.get(position).getEpisodeCount());
+        holder.totalEpisodes.setText("" + seasonList.get(position).getEpisodeCount());*/
 
     }
 

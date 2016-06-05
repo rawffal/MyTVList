@@ -1,6 +1,9 @@
 
 package com.example.nahson.mytvlist.model.SeasonNumber;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,7 +13,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class SeasonNumber {
+public class SeasonNumber implements Parcelable{
 
     @SerializedName("air_date")
     @Expose
@@ -132,4 +135,36 @@ public class SeasonNumber {
         this.seasonNumber = seasonNumber;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public SeasonNumber(Parcel in) {
+        name = in.readString();
+        overview = in.readString();
+        posterPath = in.readString();
+        episodes = new ArrayList<Episode>();
+        in.readList(episodes, Episode.class.getClassLoader());
+    }
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(overview);
+        dest.writeString(posterPath);
+        dest.writeList(episodes);
+    }
+
+
+    public static final Creator<SeasonNumber> CREATOR = new Creator<SeasonNumber>() {
+        @Override
+        public SeasonNumber createFromParcel(Parcel source) {
+            return new SeasonNumber(source);
+        }
+
+        @Override
+        public SeasonNumber[] newArray(int size) {
+            return new SeasonNumber[size];
+        }
+    };
 }

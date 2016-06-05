@@ -1,16 +1,20 @@
 
 package com.example.nahson.mytvlist.model.TVID;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class TVID {
+public class TVID implements Parcelable{
 
     @SerializedName("backdrop_path")
     @Expose
@@ -455,4 +459,43 @@ public class TVID {
         this.voteCount = voteCount;
     }
 
+    public TVID(Parcel in) {
+        backdropPath = in.readString();
+        firstAirDate = in.readString();
+        id = in.readInt();
+        name = in.readString();
+        originalName = in.readString();
+        overview = in.readString();
+        posterPath = in.readString();
+        seasons = new ArrayList<Season>();
+        in.readList(seasons, Season.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(backdropPath);
+        dest.writeString(firstAirDate);
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(originalName);
+        dest.writeString(overview);
+        dest.writeString(posterPath);
+        dest.writeList(seasons);
+    }
+    public static final Creator<TVID> CREATOR = new Creator<TVID>() {
+        @Override
+        public TVID createFromParcel(Parcel source) {
+            return new TVID(source);
+        }
+
+        @Override
+        public TVID[] newArray(int size) {
+            return new TVID[size];
+        }
+    };
 }

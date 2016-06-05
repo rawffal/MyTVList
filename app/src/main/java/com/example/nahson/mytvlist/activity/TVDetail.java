@@ -76,14 +76,14 @@ public class TVDetail extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.tv_detail_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        updateUI();
+        //updateUI();
 
         Picasso.with(this)
                 .load(sBackdrop)
                 .into(backdrop);
     }
 
-    public void updateUI() {
+    /*public void updateUI() {
         if (seasonAdapter == null) {
             seasonAdapter = new SeasonAdapter(sSeasons, R.layout.list_tv_seasons, getApplicationContext());
             recyclerView.setAdapter(seasonAdapter);
@@ -91,5 +91,5 @@ public class TVDetail extends AppCompatActivity {
             seasonAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(seasonAdapter);
         }
-    }
+    }*/
 }
