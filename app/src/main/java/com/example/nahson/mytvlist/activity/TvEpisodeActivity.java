@@ -11,10 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.nahson.mytvlist.Fragments.TvEpisodeFragment;
-import com.example.nahson.mytvlist.Fragments.TvSeasonFragment;
 import com.example.nahson.mytvlist.R;
-import com.example.nahson.mytvlist.model.SeasonNumber.Episode;
-import com.example.nahson.mytvlist.model.SeasonNumber.SeasonNumber;
 import com.example.nahson.mytvlist.model.TV.TV;
 import com.example.nahson.mytvlist.model.TVID.Season;
 
@@ -25,10 +22,6 @@ import java.util.List;
  * Created by Jonathan on 6/4/2016.
  */
 public class TvEpisodeActivity extends AppCompatActivity {
-    public static final String EPISODE_POSTER = "MyTVList.episode_poster";
-    public static final String EPISODE_NAME = "MyTVList.episode_name";
-    public static final String EPISODE_OVERVIEW = "MyTVList.episode_overview";
-    public static final String EPISODE_LIST = "MyTVList.episode_list";
     public static final String SEASON_LIST = "MyTVList.season_list";
     public static final String SEASON_ID = "MyTVList.season_id";
     public static final String TV = "MyTVList.tv";
