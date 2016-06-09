@@ -8,8 +8,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +21,8 @@ import android.widget.TextView;
 
 import com.example.nahson.mytvlist.R;
 import com.example.nahson.mytvlist.activity.MainActivity;
+import com.example.nahson.mytvlist.activity.SearchResultsActivity;
+import com.example.nahson.mytvlist.activity.TvSeasonActivity;
 import com.example.nahson.mytvlist.adapter.SeasonAdapter;
 import com.example.nahson.mytvlist.model.TV.TV;
 import com.example.nahson.mytvlist.model.TVID.Season;
@@ -65,8 +71,30 @@ public class TvSeasonFragment extends Fragment{
         if (bundle != null) {
             tv = bundle.getParcelable(TV_tv);
         }
+        setHasOptionsMenu(true);
     }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_search, menu);
 
+        MenuItem searchItem = menu.findItem(R.id.search_tv);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Intent intent = SearchResultsActivity.createIntent(getActivity(), s);
+                startActivity(intent);
+                getActivity().finish();
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_tv_detail,container,false);
@@ -84,7 +112,7 @@ public class TvSeasonFragment extends Fragment{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //MainActivity.tvShowList.add(tv);
+                SearchFragment.tvShowList.add(tv);
                 Snackbar.make(view, tv.getName() + " added to your list!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }

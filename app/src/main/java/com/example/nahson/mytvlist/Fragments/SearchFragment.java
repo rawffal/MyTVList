@@ -28,8 +28,6 @@ import java.util.ArrayList;
  * Created by Jonathan on 6/3/2016.
  */
 public class SearchFragment extends Fragment {
-    private EditText searchBarText;
-    private Button searchButton;
     private Button tvListButton;
     private Intent tvIntent;
 
@@ -57,12 +55,11 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 Intent intent = SearchResultsActivity.createIntent(getActivity(), s);
-                startActivityForResult(intent, SEARCH_FOR_LIST);
+                startActivity(intent);
                 return true;
             }
             @Override
             public boolean onQueryTextChange(String s) {
-
                 return false;
             }
         });

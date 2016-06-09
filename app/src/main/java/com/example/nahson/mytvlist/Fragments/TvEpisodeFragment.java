@@ -7,14 +7,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nahson.mytvlist.R;
+import com.example.nahson.mytvlist.activity.SearchResultsActivity;
 import com.example.nahson.mytvlist.adapter.EpisodeAdapter;
 import com.example.nahson.mytvlist.model.SeasonNumber.Episode;
 import com.example.nahson.mytvlist.model.SeasonNumber.SeasonNumber;
@@ -67,6 +72,30 @@ public class TvEpisodeFragment extends Fragment {
             season = bundle.getParcelable(SEASON_TV);
             tv = bundle.getParcelable(TV);
         }
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_tv);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Intent intent = SearchResultsActivity.createIntent(getActivity(), s);
+                startActivity(intent);
+                getActivity().finish();
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     @Override

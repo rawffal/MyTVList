@@ -1,5 +1,6 @@
 package com.example.nahson.mytvlist.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.nahson.mytvlist.Fragments.SearchFragment;
 import com.example.nahson.mytvlist.R;
 import com.example.nahson.mytvlist.activity.TVDetail;
 import com.example.nahson.mytvlist.activity.TvSeasonActivity;
@@ -65,6 +67,7 @@ public class TVAdapter extends RecyclerView.Adapter<TVAdapter.TVViewHolder> {
             ID = tv.getId();
             Intent intent = TvSeasonActivity.createIntent(context, (ArrayList) tvList, ID);
             context.startActivity(intent);
+            ((Activity)context).finish();
         }
     }
 
