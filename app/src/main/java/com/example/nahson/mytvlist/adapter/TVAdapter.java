@@ -58,6 +58,7 @@ public class TVAdapter extends RecyclerView.Adapter<TVAdapter.TVViewHolder> {
             tvShowDescription = (TextView) v.findViewById(R.id.description);
             rating = (TextView) v.findViewById(R.id.rating);
             tvPoster = (ImageView) v.findViewById(R.id.poster_image);
+            tvPoster.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
 
         @Override
@@ -90,7 +91,8 @@ public class TVAdapter extends RecyclerView.Adapter<TVAdapter.TVViewHolder> {
         Picasso.with(context)
                 .load(tvList.get(position).getPosterPath())
                 .into(holder.tvPoster);
-        if (rowLayout != R.layout.favorite_list) {
+        if (rowLayout != R.layout.card_view_tv_list) {
+            Log.d("Average", tvList.get(position).getVoteAverage().toString());
             holder.rating.setText(tvList.get(position).getVoteAverage().toString());
             holder.data.setText(tvList.get(position).getFirstAirDate());
             holder.tvShowDescription.setText(tvList.get(position).getOverview());

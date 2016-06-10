@@ -32,6 +32,7 @@ public class TVShowList extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.tv_list_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new TVAdapter(tvList, R.layout.favorite_list, getApplicationContext()));
+        //recyclerView.setAdapter(new TVAdapter(tvList, R.layout.favorite_list, getApplicationContext()));
+        recyclerView.setAdapter(new TVAdapter(tvList, R.layout.card_view_tv_list, getApplicationContext()));
     }
 }
