@@ -68,7 +68,6 @@ public class TVAdapter extends RecyclerView.Adapter<TVAdapter.TVViewHolder> {
             ID = tv.getId();
             Intent intent = TvSeasonActivity.createIntent(context, (ArrayList) tvList, ID);
             context.startActivity(intent);
-            ((Activity)context).finish();
         }
     }
 

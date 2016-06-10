@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
+import com.example.nahson.mytvlist.Fragments.PersonalTvListFragment;
 import com.example.nahson.mytvlist.Fragments.SearchFragment;
 import com.example.nahson.mytvlist.R;
 
@@ -26,7 +27,7 @@ public class HomeActivity extends AppCompatActivity /*AddFragment*/{
       Fragment fragment = fm.findFragmentById(R.id.fragment_holder);
 
       if(fragment == null){
-          fragment = new SearchFragment();
+          fragment = new PersonalTvListFragment();
           fm.beginTransaction()
                   .add(R.id.fragment_holder, fragment)
                   .commit();
