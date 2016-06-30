@@ -73,6 +73,7 @@ public class TvSeasonFragment extends Fragment{
         }
         setHasOptionsMenu(true);
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -112,7 +113,7 @@ public class TvSeasonFragment extends Fragment{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SearchFragment.tvShowList.add(tv);
+                PersonalTvListFragment.tvPersonalList.add(tv);
                 Snackbar.make(view, tv.getName() + " added to your list!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
