@@ -1,5 +1,6 @@
 package com.example.nahson.mytvlist.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -73,6 +74,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
             Log.d("Season ID", "" + season.getId());
             Intent intent = TvEpisodeActivity.createIntent(context, tv, seasonList, season.getId());
             context.startActivity(intent);
+            ((Activity)context).finish();
         }
     }
 

@@ -4,7 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,8 +28,6 @@ import java.util.ArrayList;
  * Created by Jonathan on 6/3/2016.
  */
 public class SearchFragment extends Fragment {
-    private EditText searchBarText;
-    private Button searchButton;
     private Button tvListButton;
     private Intent tvIntent;
 
@@ -36,27 +39,36 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_tv);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Intent intent = SearchResultsActivity.createIntent(getActivity(), s);
+                startActivity(intent);
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_fragment_search, container, false);
         tvShowList = new ArrayList<>();
-
-        searchBarText = (EditText) view.findViewById(R.id.search_bar);
-        searchBarText.setText("");
-        searchButton = (Button) view.findViewById(R.id.search_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (searchBarText.getText() != null) {
-                    String input = searchBarText.getText().toString();
-                    Intent intent = SearchResultsActivity.createIntent(getActivity(), input);
-                    startActivityForResult(intent, SEARCH_FOR_LIST);
-                }
-            }
-        });
 
         tvListButton = (Button) view.findViewById(R.id.tv_list_button);
         tvListButton.setOnClickListener(new View.OnClickListener() {
